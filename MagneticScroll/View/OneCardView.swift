@@ -45,6 +45,6 @@ struct OneCardView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        OneCardView(.green, "104")
+        OneCardView(.green)
     }
 }

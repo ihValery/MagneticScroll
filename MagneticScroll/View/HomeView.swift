@@ -13,16 +13,31 @@ struct HomeView: View {
     
     //MARK: Properties
     
-    @ObservedObject private var cardVM = CardVM()
-    
-    @State private var currentIndex: Int = 3
+    @ObservedObject private var cardVM = PantoneVM()
     
     @GestureState private var dragOffset: CGFloat = .zero
     
-    var body: some View {
-        VStack {
+    @State private var currentIndex: Int = 3
+    
+    private var cards: [PantoneModel] {
+        cardVM.palette
+    }
+    
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("Цветовая палитра Лондон")
+                .font(.title)
+                .bold()
             
+            Text("Выглядит более легкой и воздушной, цвета как-будто разбавлены белой краской.")
         }
+        .padding()
+    }
+
+    //MARK: Body
+
+    var body: some View {
+        header
     }
 }
 
