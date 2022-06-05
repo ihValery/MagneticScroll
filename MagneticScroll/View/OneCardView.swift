@@ -15,24 +15,27 @@ struct OneCardView: View {
     
     private let color: Color
     
-    private let text: String
+    private let text: String?
 
     var body: some View {
         RoundedRectangle(cornerRadius: 13, style: .continuous)
             .fill(color)
-            .overlay(
-                Text(text)
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .padding()
-                , alignment: .topTrailing
-            )
+            .overlay(header, alignment: .topTrailing)
+    }
+    
+    @ViewBuilder private var header: some View {
+        if let text = text {
+            Text(text)
+                .font(.title)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .padding()
+        }
     }
     
     //MARK: Initializer
     
-    init(_ color: Color,_ text: String) {
+    init(_ color: Color,_ text: String? = nil) {
         self.color = color
         self.text = text
     }
@@ -42,6 +45,6 @@ struct OneCardView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        OneCardView(.green, "test")
+        OneCardView(.green, "104")
     }
 }
