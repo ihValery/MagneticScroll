@@ -2,6 +2,8 @@
 
 - "Scroll" с авто центрированием
 
+<img src="https://github.com/ihValery/MagneticScroll/blob/main/Images/resultGif.gif?raw=true"></a>
+
 - вместо ScrollView создаем HStack и заполняем его карточками
 
 <img src="https://github.com/ihValery/MagneticScroll/blob/main/Images/HStackDefault.png?raw=true"></a>
