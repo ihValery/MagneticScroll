@@ -27,7 +27,7 @@ final class PantoneVM: ObservableObject {
             PantoneModel(.coralRose, "Коралловый розовый", "Coral Rose"),
             PantoneModel(.superSonic, "Супер соник", "Super Sonic"),
             PantoneModel(.popcorn, "Попкорн", "Popcorn"),
-            PantoneModel(.potpourri, "Попуррм", "Potpourri"),
+            PantoneModel(.potpourri, "Попурри", "Potpourri"),
             PantoneModel(.bubblegum, "Жевательная резинка", "Bubblegum"),
             PantoneModel(.fragileSprout, "Хрупкий росток", "FragileSprout"),
             PantoneModel(.sudanBrown, "Судан браун", "Sudan Brown"),

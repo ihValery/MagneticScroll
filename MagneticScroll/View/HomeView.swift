@@ -19,7 +19,7 @@ struct HomeView: View {
     
     @State private var currentIndex: Int = 3
     
-    private var cards: [PantoneModel] {
+    private var palette: [PantoneModel] {
         cardVM.palette
     }
     
