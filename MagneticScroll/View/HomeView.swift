@@ -13,78 +13,65 @@ struct HomeView: View {
     
     //MARK: Properties
     
-    @ObservedObject private var cardVM = CardVM()
-    
-    @State private var currentIndex: Int = .zero
+    @ObservedObject private var pantoneVM = PantoneVM()
     
     @GestureState private var dragOffset: CGFloat = .zero
     
-    var body: some View {
-        VStack(spacing: 0) {
-            header
-            
-            GeometryReader { outerProxy in
-                let cardWidth = outerProxy.size.width - 50
-                
-                HStack(spacing: 0) {
-                    ForEach(cardVM.cards.indices, id: \.self) { index in
-                        GeometryReader { innerProxy in
-                            OneCardView(cardVM.cards[index].color,
-                                        "\(Int(dragOffset))")
-                        }
-                        .padding(.horizontal, 10)
-                        .frame(width: cardWidth, height: heightCurrentCard(index, outerProxy))
-                        .offset(x: 25)
-                        .offset(x: -(cardWidth) * CGFloat(currentIndex))
-                        .offset(x: dragOffset)
-                        .gesture(simpleGesture(cardWidth))
-                    }
-                }
-                .frame(width: outerProxy.size.width, height: outerProxy.size.height, alignment: .leading)
-                .background(separationCenter(outerProxy))
-            }
-        }
-        .animation(.interpolatingSpring(mass: 0.6, stiffness: 100, damping: 10, initialVelocity: 0.3), value: dragOffset)
+    @State private var currentIndex: Int = 2
+    
+    private var palette: [PantoneModel] {
+        pantoneVM.palette
     }
     
     private var header: some View {
-        VStack(alignment: .trailing, spacing: 0) {
-            Text("Скролл с авто центрированием")
+        VStack(alignment: .leading, spacing: 6) {
+            Text(pantoneVM.title)
                 .font(.title)
                 .bold()
-                .padding(.vertical)
-                .frame(maxWidth: .infinity, alignment: .leading)
             
-            Text("Текущий индекс: \(currentIndex)")
+            Text(pantoneVM.subtitle)
         }
+        .padding()
         .padding(.bottom)
-        .padding(.horizontal)
-    }
-        
-    //MARK: Private Methods
-    
-    private func heightCurrentCard(_ index: Int,_ outer: GeometryProxy) -> CGFloat {
-        let height = outer.size.height
-        
-        return currentIndex == index ? height : height - 50
+        .frame(maxWidth: .infinity)
     }
     
-    private func separationCenter(_ outer: GeometryProxy) -> some View {
-        Rectangle()
-            .fill(.gray)
-            .frame(width: 1, height: outer.size.height + 20)
-    }
+    //MARK: Body
 
-    private func simpleGesture(_ cardWidth: CGFloat) -> some Gesture {
-        DragGesture()
+    var body: some View {
+        VStack {
+            header
+            
+            GeometryReader { grProxy in
+                let widthCard = grProxy.size.width - 200
+                
+                HStack(spacing: 0) {
+                    ForEach(palette.indices, id: \.self) { index in
+                        OnePantoneView(palette[index], currentIndex == index)
+                            .frame(width: widthCard)
+                            .offset(x: -widthCard * CGFloat(currentIndex))
+                            .offset(x: 100)
+                            .offset(x: dragOffset)
+                            .gesture(simpleGesture(widthCard))
+                    }
+                }
+                .animation(.interpolatingSpring(mass: 0.6, stiffness: 100, damping: 10, initialVelocity: 0.3), value: dragOffset)
+            }
+        }
+    }
+    
+    //MARK: Private Methods
+
+    private func simpleGesture(_ widthCard: CGFloat) -> some Gesture {
+        DragGesture(minimumDistance: 1)
             .updating($dragOffset) { value, state, transaction in
                 state = value.translation.width
             }
             .onEnded { value in
-                let threshold = cardWidth * 0.5
+                let threshold = widthCard * 0.5
                 var newIndex = Int(-value.translation.width / threshold) + currentIndex
                 
-                newIndex = min(max(newIndex, 0), cardVM.cards.count - 1)
+                newIndex = min(max(newIndex, 0), palette.count - 1)
                 
                 currentIndex = newIndex
             }
