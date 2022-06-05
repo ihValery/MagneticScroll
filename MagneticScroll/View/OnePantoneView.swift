@@ -15,7 +15,7 @@ struct OnePantoneView: View {
     
     private let pantone: PantoneModel
     
-    @State private var isSelect: Bool = false
+    private let isSelect: Bool
         
     //MARK: Body
     
@@ -40,19 +40,14 @@ struct OnePantoneView: View {
                    height: isSelect ? cardSize + 50 : cardSizeSmall)
             
             .frame(width: cardSize, height: cardSize + 50, alignment: .top)
-            
-            .onTapGesture {
-                withAnimation(.spring()) {
-                    isSelect.toggle()
-                }
-            }
         }
     }
     
     //MARK: Initializer
     
-    init(_ pantone: PantoneModel) {
+    init(_ pantone: PantoneModel,_ isSelect: Bool) {
         self.pantone = pantone
+        self.isSelect = isSelect
     }
     
     //MARK: Private Methods
@@ -64,6 +59,7 @@ struct OnePantoneView: View {
             Text(pantone.nameRu)
                 .font(.subheadline)
         }
+        .lineLimit(1)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, isSelect ? 20 : 0)
         .padding(.vertical)
@@ -77,8 +73,11 @@ struct OnePantoneView_Previews: PreviewProvider {
     static let pantone = PantoneVM().palette[5]
     
     static var previews: some View {
-        OnePantoneView(pantone)
-            .frame(width: 200)
-            .padding(.top, 50)
+        Group {
+            OnePantoneView(pantone, false)
+            OnePantoneView(pantone, true)
+        }
+        .previewLayout(.fixed(width: 300, height: 380))
+        .padding(.top)
     }
 }
